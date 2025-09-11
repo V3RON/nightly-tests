@@ -118,8 +118,9 @@ runs:
           adb shell am start -n com.rnapp/.MainActivity
           echo "Waiting for app to load..."
           sleep 10
-          if ! adb logcat -e "LOADED_OK" -d | grep "LOADED_OK"; then
+          if adb logcat -e "LOADED_OK" -d | grep "LOADED_OK" > /dev/null 2>&1; then
+            echo "✅ App loaded successfully"
+          else
             echo "❌ 'LOADED_OK' not found in logs"
             exit 1
           fi
-          echo "✅ App loaded successfully"
