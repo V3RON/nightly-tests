@@ -103,6 +103,7 @@ runs:
     - name: Build Android
       if: ${{ inputs.platform == 'android' }}
       uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed # v2.34.0
+      working-directory: /tmp/RNApp/android
       with:
         api-level: 35
         arch: x86_64
@@ -113,7 +114,7 @@ runs:
         emulator-boot-timeout: 12000
         disable-animations: false
         script: |
-          /tmp/RNApp/android/gradlew installDebug
+          ./gradlew installDebug
           adb shell am start -n com.yourapp/.MainActivity
           echo "Waiting for app to load..."
           sleep 10
