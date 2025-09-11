@@ -3,8 +3,8 @@ name: Deploy website
 on:
   workflow_dispatch:
   # deploy daily @ 5:30 AM UTC
-  schedule:
-    - cron: '30 5 * * *'
+  # schedule:
+  #   - cron: '30 5 * * *'
   push:
     branches:
       - main
@@ -22,8 +22,8 @@ jobs:
       - name: ⚙️ Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'yarn'
+          node-version: "22"
+          cache: "yarn"
 
       - name: 🚚️ Install dependencies
         working-directory: website
@@ -40,7 +40,7 @@ jobs:
         working-directory: website
         run: yarn build
         env:
-          REPOSITORY_NAME: 'nightly-tests'
+          REPOSITORY_NAME: "nightly-tests"
 
       - name: 🚀 Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

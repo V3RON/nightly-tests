@@ -6,13 +6,13 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'website/**'
-      - '.github/workflows/deploy-website.yml'
-      - '.github/workflows/pr-check-new-entries.yml'
+      - "website/**"
+      - ".github/workflows/deploy-website.yml"
+      - ".github/workflows/pr-check-new-entries.yml"
   workflow_dispatch:
   # nightly build @ 4:15 AM UTC
-  schedule:
-    - cron: '15 4 * * *'
+  # schedule:
+  #   - cron: '15 4 * * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}

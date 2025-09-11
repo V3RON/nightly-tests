@@ -14,7 +14,6 @@ on:
       firebase_app_projectname:
         required: true
 
-
 # We use the matrix.library entry to specify the dependency we want to use
 # The key is used directly as the <pkg> in the `yarn add <pkg>` command.
 jobs:
@@ -50,7 +49,7 @@ jobs:
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.14.0'
+          node-version: "22.14.0"
           cache: yarn
       - name: Test ${{ matrix.library }}
         id: run-test
@@ -81,7 +80,7 @@ jobs:
       - name: Restore outcomes
         uses: actions/download-artifact@v4
         with:
-          pattern: '*-outcome'
+          pattern: "*-outcome"
           path: /tmp
       - name: Collect failures
         uses: actions/github-script@v6
