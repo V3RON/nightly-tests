@@ -115,7 +115,7 @@ runs:
         disable-animations: false
         script: |
           ./gradlew installDebug
-          adb shell am start -n com.yourapp/.MainActivity
+          adb shell am start -n com.rnapp/.MainActivity
           echo "Waiting for app to load..."
           sleep 10
           if ! adb logcat -e "LOADED_OK" -d | grep "LOADED_OK"; then
