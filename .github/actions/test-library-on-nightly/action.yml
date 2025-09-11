@@ -113,8 +113,7 @@ runs:
         emulator-boot-timeout: 12000
         disable-animations: false
         script: |
-          cd /tmp/RNApp/android
-          ./gradlew installDebug
+          /tmp/RNApp/android/gradlew installDebug
           adb shell am start -n com.yourapp/.MainActivity
           echo "Waiting for app to load..."
           sleep 10
