@@ -1,7 +1,7 @@
 name: Test Libraries on Nightlies
 
 on:
-  workflow_call:
+  workflow_dispatch:
     # secrets:
     #   discord_webhook_url:
     #     required: true
