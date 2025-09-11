@@ -2,17 +2,17 @@ name: Test Libraries on Nightlies
 
 on:
   workflow_call:
-    secrets:
-      discord_webhook_url:
-        required: true
-      firebase_app_email:
-        required: true
-      firebase_app_pass:
-        required: true
-      firebase_app_apikey:
-        required: true
-      firebase_app_projectname:
-        required: true
+    # secrets:
+    #   discord_webhook_url:
+    #     required: true
+    #   firebase_app_email:
+    #     required: true
+    #   firebase_app_pass:
+    #     required: true
+    #   firebase_app_apikey:
+    #     required: true
+    #   firebase_app_projectname:
+    #     required: true
 
 # We use the matrix.library entry to specify the dependency we want to use
 # The key is used directly as the <pkg> in the `yarn add <pkg>` command.
@@ -71,25 +71,25 @@ jobs:
           name: ${{ steps.save-outcome.outputs.lib_folder }}-${{ matrix.platform }}-outcome
           path: /tmp/${{ steps.save-outcome.outputs.lib_folder }}-${{ matrix.platform }}-outcome
 
-  collect-results:
-    runs-on: ubuntu-latest
-    needs: [test-library-on-nightly]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Restore outcomes
-        uses: actions/download-artifact@v4
-        with:
-          pattern: "*-outcome"
-          path: /tmp
-      - name: Collect failures
-        uses: actions/github-script@v6
-        env:
-          FIREBASE_APP_EMAIL: ${{ secrets.firebase_app_email }}
-          FIREBASE_APP_PASS: ${{ secrets.firebase_app_pass }}
-          FIREBASE_APP_APIKEY: ${{ secrets.firebase_app_apikey }}
-          FIREBASE_APP_PROJECTNAME: ${{ secrets.firebase_app_projectname }}
-        with:
-          script: |
-            const {collectResults} = require('./.github/workflow-scripts/collectNightlyOutcomes.js');
-            await collectResults('${{secrets.discord_webhook_url}}');
+  # collect-results:
+  #   runs-on: ubuntu-latest
+  #   needs: [test-library-on-nightly]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Restore outcomes
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         pattern: "*-outcome"
+  #         path: /tmp
+  #     - name: Collect failures
+  #       uses: actions/github-script@v6
+  #       env:
+  #         FIREBASE_APP_EMAIL: ${{ secrets.firebase_app_email }}
+  #         FIREBASE_APP_PASS: ${{ secrets.firebase_app_pass }}
+  #         FIREBASE_APP_APIKEY: ${{ secrets.firebase_app_apikey }}
+  #         FIREBASE_APP_PROJECTNAME: ${{ secrets.firebase_app_projectname }}
+  #       with:
+  #         script: |
+  #           const {collectResults} = require('./.github/workflow-scripts/collectNightlyOutcomes.js');
+  #           await collectResults('${{secrets.discord_webhook_url}}');
