@@ -115,6 +115,9 @@ runs:
         disable-animations: false
         script: |
           ./gradlew installDebug
+          echo "Starting log monitoring and launching app..."
+          PLATFORM=android LOG_MESSAGE="LOADED_OK" TIMEOUT=30 node ${{ github.workspace }}/.github/workflow-scripts/waitForLogs.js &
+          LOG_PID=$!
+          sleep 2
           adb shell am start -n com.rnapp/.MainActivity
-          echo "Waiting for app to load..."
-          PLATFORM=android LOG_MESSAGE="LOADED_OK" TIMEOUT=30 node ${{ github.workspace }}/.github/workflow-scripts/waitForLogs.js
+          wait $LOG_PID
