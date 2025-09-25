@@ -117,5 +117,4 @@ runs:
           ./gradlew installDebug
           adb shell am start -n com.rnapp/.MainActivity
           echo "Waiting for app to load..."
-          sleep 10
-          adb logcat -e "LOADED_OK" -d | grep "LOADED_OK" > /dev/null 2>&1 && echo "✅ App loaded successfully" || (echo "❌ 'LOADED_OK' not found in logs" && exit 1)
+          PLATFORM=android LOG_MESSAGE="LOADED_OK" TIMEOUT=30 node ${{ github.workspace }}/.github/workflow-scripts/waitForLogs.js
