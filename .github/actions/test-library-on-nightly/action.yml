@@ -59,7 +59,20 @@ runs:
           -workspace RNApp.xcworkspace \
           -scheme RNApp \
           -sdk iphonesimulator
-        
+    - name: Setup iOS Simulator
+      if: ${{ inputs.platform == 'ios' }}
+      uses: futureware-tech/simulator-action@v4
+      with:
+        model: iPhone 16 Pro
+        os: iOS
+        os_version: 18.6
+        wait_for_boot: true
+        erase_before_boot: false
+    - name: Run app
+      if: ${{ inputs.platform == 'ios' }}
+      run: |
+        xcrun simctl install booted /tmp/RNApp/ios/build/Build/Products/Debug-iphonesimulator/RNApp.app
+
         echo "Starting Metro bundler in background..."
         cd /tmp/RNApp
         yarn start &
@@ -71,10 +84,10 @@ runs:
         sleep 2
         xcrun simctl launch booted com.rnapp
         wait $LOG_PID
-        
+         
         # Clean up Metro process
         kill $METRO_PID 2>/dev/null || true
-
+   
     # Android
     - name: Setup Java for Android
       if: ${{ inputs.platform == 'android' }}
@@ -128,25 +141,5 @@ runs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         emulator-boot-timeout: 12000
         disable-animations: false
-        script: |
-          ./gradlew installDebug
-  
-          echo "Starting Metro bundler in background..."
-          yarn start &
-          METRO_PID=$!
-
-          echo "Reversing Metro port..."
-          adb reverse tcp:8081 tcp:8081
-          
-          echo "Starting log monitoring and launching app..."
-          PLATFORM=android LOG_MESSAGE="LOADED_OK" TIMEOUT=30 node ${{ github.workspace }}/.github/workflow-scripts/waitForLogs.js &
-          LOG_PID=$!
-          
-          sleep 2
-
-          adb shell am start -n com.rnapp/.MainActivity
-          wait $LOG_PID
-          
-          # Clean up Metro process
-          kill $METRO_PID 2>/dev/null || true
+        script: ${{ github.workspace }}/.github/workflow-scripts/run-android.sh
 
