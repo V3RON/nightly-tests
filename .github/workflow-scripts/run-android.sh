@@ -20,4 +20,4 @@ adb shell am start -n com.rnapp/.MainActivity
 wait $LOG_PID
 
 # Clean up Metro process
-kill $METRO_PID 2>/dev/null || true
+kill -9 $METRO_PID 2>/dev/null || true
