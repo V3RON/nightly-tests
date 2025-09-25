@@ -11,7 +11,7 @@ echo "Reversing Metro port..."
 adb reverse tcp:8081 tcp:8081
 
 echo "Starting log monitoring and launching app..."
-PLATFORM=android LOG_MESSAGE="LOADED_OK" TIMEOUT=30 node ${{ github.workspace }}/.github/workflow-scripts/waitForLogs.js &
+PLATFORM=android LOG_MESSAGE="LOADED_OK" TIMEOUT=30 node ${GITHUB_WORKSPACE}/.github/workflow-scripts/waitForLogs.js &
 LOG_PID=$!
 
 sleep 2

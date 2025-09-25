@@ -58,7 +58,8 @@ runs:
         xcodebuild build \
           -workspace RNApp.xcworkspace \
           -scheme RNApp \
-          -sdk iphonesimulator
+          -sdk iphonesimulator \
+          -derivedDataPath build
     - name: Setup iOS Simulator
       if: ${{ inputs.platform == 'ios' }}
       uses: futureware-tech/simulator-action@v4
@@ -80,7 +81,7 @@ runs:
         METRO_PID=$!
         
         echo "Starting log monitoring and launching app..."
-        PLATFORM=ios LOG_MESSAGE="LOADED_OK" TIMEOUT=30 node ${{ github.workspace }}/.github/workflow-scripts/waitForLogs.js &
+        PLATFORM=ios LOG_MESSAGE="LOADED_OK" TIMEOUT=30 GITHUB_WORKSPACE="${{ github.workspace }}" node ${GITHUB_WORKSPACE}/.github/workflow-scripts/waitForLogs.js &
         LOG_PID=$!
         sleep 2
         xcrun simctl launch booted com.rnapp
@@ -142,5 +143,5 @@ runs:
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         emulator-boot-timeout: 12000
         disable-animations: false
-        script: ${{ github.workspace }}/.github/workflow-scripts/run-android.sh
+        script: GITHUB_WORKSPACE="${{ github.workspace }}" ${{ github.workspace }}/.github/workflow-scripts/run-android.sh
 
