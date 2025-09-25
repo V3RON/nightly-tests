@@ -84,7 +84,7 @@ runs:
         PLATFORM=ios LOG_MESSAGE="LOADED_OK" TIMEOUT=30 GITHUB_WORKSPACE="${{ github.workspace }}" node ${GITHUB_WORKSPACE}/.github/workflow-scripts/waitForLogs.js &
         LOG_PID=$!
         sleep 2
-        xcrun simctl launch booted org.reactjs.native.example.RnApp
+        xcrun simctl launch booted org.reactjs.native.example.RNApp
         wait $LOG_PID
          
         # Clean up Metro process
