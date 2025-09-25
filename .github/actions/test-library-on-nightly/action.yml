@@ -69,6 +69,7 @@ runs:
         wait_for_boot: true
         erase_before_boot: false
     - name: Run app
+      shell: bash
       if: ${{ inputs.platform == 'ios' }}
       run: |
         xcrun simctl install booted /tmp/RNApp/ios/build/Build/Products/Debug-iphonesimulator/RNApp.app
